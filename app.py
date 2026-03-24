@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
                 email = db.Column(db.String(120), unique=True, nullable=False)
                 password = db.Column(db.String(200), nullable=False)
                 cards = db.relationship('Card', backref='owner', lazy=True)
+
 class Card(db.Model):
                 id = db.Column(db.Integer, primary_key=True)
                 cardname = db.Column(db.String(120), nullable=False)
@@ -32,6 +33,25 @@ class Card(db.Model):
                 quantity = db.Column(db.Integer, nullable=True)
                 user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
                 notes = db.Column(db.String(500), nullable=True)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@app.route('/')
+def index():
+    if current_user.is_authenticated:
+            return redirect(url_for('dashboard'))
+            return redirect(url_for('login'))
+            
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+    username = request.form['username']
+    password = request.form['password']
+    user = User.query.filter_by(username=username).first()
+    if user and check_password_hash(user.password, password):
+        login_user(user)
+            return redirect(url_for('dashboard'))
+    flash('Invalid username or password')
+    return render_template('login.html')
