@@ -41,17 +41,17 @@ def load_user(user_id):
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-            return redirect(url_for('dashboard'))
-            return redirect(url_for('login'))
+        return redirect(url_for('dashboard'))
+    return redirect(url_for('login'))
             
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-    username = request.form['username']
-    password = request.form['password']
-    user = User.query.filter_by(username=username).first()
-    if user and check_password_hash(user.password, password):
-        login_user(user)
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):
+            login_user(user)
             return redirect(url_for('dashboard'))
     flash('Invalid username or password')
     return render_template('login.html')
