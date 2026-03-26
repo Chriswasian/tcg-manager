@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Register — TCG Manager{% endblock %}
+
+{% block content %}
+<h2>Register</h2>
+<form method="POST">
+    <div>
+        <label>Username</label><br>
+        <input type="text" name="username" required>
+    </div>
+    <br>
+    <div>
+        <label>Password</label><br>
+        <input type="password" name="password" required>
+    </div>
+    <br>
+    <div>
+        <label>Email</label><br>
+        <input type="email" name="email" required>
+    </div>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+<br>
+<p>Have an account? <a href="/login">Login here</a></p>
+{% endblock %}
