@@ -74,5 +74,72 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
         
+@app.route('/dashboard')
+@login_required
+def dashboard():
+      cards = Card.query.filter_by(user_id=current_user.id).all()
+      return render_template('dashboard.html', cards=cards)
 
+@app.route('/add', methods=['GET', 'POST'])
+@login_required
+def add():
+      if request.method == 'POST':
+            card = Card(
+            cardname=request.form['cardname'],
+            set_name=request.form['set_name'],
+            rarity=request.form['rarity'],
+            condition=request.form['condition'],
+            holo=bool(request.form.get('holo')),
+            reverse_holo=bool(request.form.get('reverse_holo')),
+            first_edition=bool(request.form.get('first_edition')),
+            estimated_value=float(request.form.get('estimated_value') or 0),
+            quantity=int(request.form.get('quantity') or 1),
+            notes=request.form.get('notes', ''),
+            user_id=current_user.id)
+            db.session.add(card)
+            db.session.commit()
+            return redirect(url_for('dashboard'))
+      return render_template('add_card.html')
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_card(id):
+      card = Card.query.get_or_404(id)
+      if card.user_id != current_user.id:
+        return redirect(url_for('dashboard'))
+      if request.method == 'POST':
+        card.cardname = request.form['cardname']
+        card.set_name = request.form['set_name']
+        card.rarity = request.form['rarity']
+        card.condition = request.form['condition']
+        card.holo = bool(request.form.get('holo'))
+        card.reverse_holo = bool(request.form.get('reverse_holo'))
+        card.first_edition = bool(request.form.get('first_edition'))
+        card.estimated_value = float(request.form.get('estimated_value') or 0)
+        card.quantity = int(request.form.get('quantity') or 1)
+        card.notes = request.form.get('notes', '')
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+      return render_template('edit_card.html', card=card)
+
+@app.route('/delete/<int:id>')
+@login_required
+def delete_card(id):
+      card = Card.query.get_or_404(id)
+      if card.user_id == current_user.id:
+        db.session.delete(card)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+
+if __name__ == '__main__':
+     with app.app_context():
+        db.create_all()
+app.run(debug=True) 
+      
+      
+
+      
+
+
+      
 
