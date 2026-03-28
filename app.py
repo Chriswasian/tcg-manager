@@ -3,6 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from dotenv import load_dotenv
+from pokemontcgsdk import Card as PokemonCard
+from pokemontcgsdk import RestClient
+
+load_dotenv()
+RestClient.configure(os.getenv('POKEMON_TCG_API_KEY'))
 
 app = Flask(__name__)
 
@@ -135,6 +141,7 @@ if __name__ == '__main__':
      with app.app_context():
         db.create_all()
 app.run(debug=True) 
+
       
       
 
