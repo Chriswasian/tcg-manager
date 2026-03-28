@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - TCG Manager{% endblock %}
+
+{% block content %}
+{% if cards %}
+{% for card in cards %}
+<div style="background:#ffe0e0; padding:10px; border-radius:6px; margin-bottom:10px;">{{ card.cardname }}{{
+    card.set_name }} {{ card.rarity }} {{ card.condition }} {{ card.holo }}</div>
+{% endfor %}
+{% else %}
+<p>No cards yet! <a href="/add">Add your first card</a></p>
+{% endif %}
+{% endblock %}
