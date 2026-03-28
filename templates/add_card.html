@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Add Card- TCG Manager{% endblock %}
+
+{% block content %}
+<h2>Add a Card</h2>
+<form method="POST">
+    <div>
+        <label>Card Name</label><br>
+        <input type="text" name="cardname" required>
+    </div>
+    <br>
+    <div>
+        <label>Set Name</label><br>
+        <input type="text" name="set_name" required>
+    </div>
+    <br>
+    <div>
+        <label>Rarity</label><br>
+        <input type="text" name="rarity" required>
+    </div>
+    <br>
+    <div>
+        <label>Condition</label><br>
+        <input type="text" name="condition" required>
+    </div>
+    <br>
+    <div>
+        <label>Holo</label><br>
+        <input type="checkbox" name="holo">
+    </div> <br>
+    <div>
+        <label>Reverse Holo</label><br>
+        <input type="checkbox" name="reverse_holo">
+    </div> <br>
+    <div>
+        <label>First Edition</label><br>
+        <input type="checkbox" name="first_edition">
+    </div> <br>
+    <div>
+        <label>Estimated Value</label><br>
+        <input type="text" name="estimated_value">
+    </div> <br>
+    <div>
+        <label>Quantity</label><br>
+        <input type="text" name="quantity">
+        <br>
+        <div>
+            <label>Notes</label><br>
+            <input type="text" name="notes">
+        </div>
+    </div>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
